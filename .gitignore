@@ -3,3 +3,4 @@ caches
 npm-debug.log
 tmp
 aws-credentials.json
+.idea
