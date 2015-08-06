@@ -1,4 +1,4 @@
-# grunt-aws
+# grunt-pure-s3
 
 A Grunt interface into the Amazon Web Services Node.JS SDK `aws-sdk`
 
