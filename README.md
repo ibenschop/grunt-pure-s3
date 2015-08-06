@@ -1,8 +1,7 @@
 # grunt-pure-s3
 
 A Grunt interface into the Amazon S3 Web Services Node.JS SDK `aws-sdk`
-
-[![NPM version](https://nodei.co/npm/grunt-aws.png?compact=true)](https://npmjs.org/package/grunt-aws)
+this is inspired from [grunt-aws](https://www.npmjs.com/package/grunt-aws)
 
 ## Getting Started
 This plugin requires Grunt `0.4.x`
@@ -10,13 +9,13 @@ This plugin requires Grunt `0.4.x`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```sh
-npm install --save-dev grunt-aws
+npm install --save-dev grunt-pure-s3
 ```
 
 One the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-aws');
+grunt.loadNpmTasks('grunt-pure-s3');
 ```
 
 -----
@@ -27,8 +26,7 @@ This plugin aims to provide a task for each service on AWS.
 Currently however, it only supports:
 
 * [Simple Storage Service `"s3"`](#the-s3-task)
-* [Route 53 `"route53"`](#the-route53-task)
-* [CloudFront `"cloudfront"`](#the-cloudfront-task)
+
 
 -----
 
@@ -47,22 +45,28 @@ To upload all files *inside* `build/` into `my-awesome-bucket`:
 
 ```js
   grunt.initConfig({
-    aws: grunt.file.readJSON("credentials.json"),
-    s3: {
-      options: {
-        accessKeyId: "<%= aws.accessKeyId %>",
-        secretAccessKey: "<%= aws.secretAccessKey %>",
-        bucket: "my-awesome-bucket"
-      },
-      build: {
-        cwd: "build/",
-        src: "**"
-      }
-    }
+  
+   aws: grunt.file.readJSON("aws-credentials.json"),
+   
+       staging: {
+         options: {
+           bucket: "preview.domain.com",
+           accessKeyId: '<%= aws.accessKeyId %>',
+           secretAccessKey: '<%= aws.secretAccessKey %>',
+           region: "us-west-2",
+           concurrency: 20,
+           gzip:false,
+           cache:false,
+           headers: {
+             CacheControl: 'max-age=300',
+             ContentEncoding: "gzip",
+             Expires: new Date('2016')
+           }
+         }
+       },
   });
 ```
 
-See the complete example [here](https://github.com/jpillora/grunt-aws/tree/master/example)
 
 ### Options
 
@@ -242,107 +246,6 @@ Running "s3:uat" (s3) task
 >> No change 'public/img/loader.gif'
 >> No change 'public/vendor/verify.notify.js'
 >> Put 0 files
-```
-
-### Explained Examples
-
-``` js
-s3: {
-  //provide your options...
-
-  options: {
-    accessKeyId: "<%= aws.accessKeyId %>",
-    secretAccessKey: "<%= aws.secretAccessKey %>",
-    bucket: "my-bucket"
-  },
-
-  //then create some targets...
-
-  //upload all files within build/ to root
-  build: {
-    cwd: "build/",
-    src: "**"
-  },
-
-  //upload all files within build/ to output/
-  move: {
-    cwd: "build/",
-    src: "**",
-    dest: "output/"
-  },
-
-  //upload and rename an individual file
-  specificFile: {
-    src: "build/a.txt",
-    dest: "output/b.txt"
-  },
-
-  //upload and rename many individual files
-  specificFiles: {
-    files: [{
-      src: "build/a.txt",
-      dest: "output/b.txt"
-    },{
-      src: "build/c.txt",
-      dest: "output/d.txt"
-    }]
-  },
-
-  //upload and rename many individual files (shorter syntax)
-  specificFilesShort: {
-    "output/b.txt": "build/a.txt"
-    "output/d.txt": "build/c.txt"
-  },
-
-  //upload the img/ folder and all it's files
-  images: {
-    src: "img/**"
-  },
-
-  //upload the docs/ folder and it's pdf and txt files
-  documents: {
-    src: "docs/**/*.{pdf,txt}"
-  },
-
-  //upload the secrets/ folder and all its files to a different bucket
-  secrets: {
-    //override options
-    options: {
-    	bucket: "my-secret-bucket"
-    }
-    src: "secrets/**"
-  },
-
-  //upload the public/ folder with a custom Cache-control header
-  longTym: {
-    options: {
-      headers: {
-        CacheControl: 'max-age=900, public, must-revalidate'
-      }
-    }
-    src: "public/**"
-  },
-
-  //upload the public/ folder with a 2 year cache time
-  longTym: {
-    options: {
-      headers: {
-        CacheControl: 630720000 //max-age=630720000, public
-      }
-    }
-    src: "public/**"
-  },
-  
-  //upload the public/ folder with a specific expiry date
-  beryLongTym: {
-    options: {
-      headers: {
-        Expires: new Date('2050') //Sat, 01 Jan 2050 00:00:00 GMT
-      }
-    }
-    src: "public/**"
-  }
-}
 ```
 
 ### References
