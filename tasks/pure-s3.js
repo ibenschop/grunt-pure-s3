@@ -5,7 +5,7 @@ var AWS = require("aws-sdk"),
     fs = require("fs"),
     crypto = require("crypto"),
     zlib = require("zlib"),
-    CacheMgr = require("../cache-mgr"),
+    CacheMgr = require("./cache-mgr"),
     mime = require("mime");
 
 module.exports = function(grunt) {
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
   };
 
   //s3 task
-  grunt.registerMultiTask("s3", DESC, function() {
+  grunt.registerMultiTask("pure-s3", DESC, function() {
 
     //normalize files array (force expand)
     var files = [];
@@ -65,12 +65,12 @@ module.exports = function(grunt) {
 
     //whitelist allowed keys
     AWS.config.update(_.pick(opts,
-      'accessKeyId',
-      'secretAccessKey',
-      'region',
-      'sslEnabled',
-      'maxRetries',
-      'httpOptions'
+        'accessKeyId',
+        'secretAccessKey',
+        'region',
+        'sslEnabled',
+        'maxRetries',
+        'httpOptions'
     ), true);
 
     //s3 client
@@ -102,21 +102,21 @@ module.exports = function(grunt) {
     //use allowed headers
     if(typeof opts.headers === 'object')
       _.extend(baseObject, _.pick(
-        opts.headers,
-        //http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
-        'ContentLength',
-        'ContentType',
-        'ContentDisposition',
-        'ContentEncoding',
-        'CacheControl',
-        'Expires',
-        'GrantFullControl',
-        'GrantRead',
-        'GrantReadACP',
-        'GrantWriteACP',
-        'ServerSideEncryption',
-        'StorageClass',
-        'WebsiteRedirectLocation'
+          opts.headers,
+          //http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
+          'ContentLength',
+          'ContentType',
+          'ContentDisposition',
+          'ContentEncoding',
+          'CacheControl',
+          'Expires',
+          'GrantFullControl',
+          'GrantRead',
+          'GrantReadACP',
+          'GrantWriteACP',
+          'ServerSideEncryption',
+          'StorageClass',
+          'WebsiteRedirectLocation'
       ));
 
     //convert numbers and dates
@@ -246,8 +246,8 @@ module.exports = function(grunt) {
         }
         var i = 0;
         while(i < prefix.length &&
-              i < file.dest.length &&
-              file.dest.charAt(i) === prefix.charAt(i)) i++;
+        i < file.dest.length &&
+        file.dest.charAt(i) === prefix.charAt(i)) i++;
         pindex = Math.min(i, pindex);
       });
       prefix = prefix.substr(0, pindex);
@@ -260,9 +260,9 @@ module.exports = function(grunt) {
 
       //already have list
       if(cache.files &&
-         refreshedAt &&
-         opts.cacheTTL &&
-         opts.cacheTTL > (Date.now() - refreshedAt)) {
+          refreshedAt &&
+          opts.cacheTTL &&
+          opts.cacheTTL > (Date.now() - refreshedAt)) {
         grunt.verbose.writeln("Using cached object list prefixed with '" + prefix + "'");
         return callback();
       }
@@ -327,8 +327,8 @@ module.exports = function(grunt) {
       //skip existing files
       var etag = cache.files[dest];
       if(opts.cache &&
-         !stats.newOptions &&
-         etag && etag === hash(contents, 'md5')) {
+          !stats.newOptions &&
+          etag && etag === hash(contents, 'md5')) {
         grunt.log.ok(DRYRUN + "No change '" + dest + "'");
         callback();
         return;

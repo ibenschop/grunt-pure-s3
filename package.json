@@ -1,23 +1,22 @@
 {
-  "name": "grunt-aws",
-  "description": "A Grunt interface into the Amazon Node.JS SDK",
-  "version": "0.5.4",
-  "homepage": "https://github.com/jpillora/grunt-aws",
+  "name": "grunt-pure-s3",
+  "description": "A Grunt interface into the Amazon S3 Web Services using Node.JS SDK",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ibenschop/grunt-pure-s3",
   "author": {
-    "name": "Jaime Pillora",
-    "email": "dev@jpillora.com",
-    "url": "http://jpillora.com"
+    "name": "Ian B",
+    "email": "ibenschop@gmail.com",
+    "url": "https://github.com/ibenschop/"
   },
   "maintainers": [
-    "dev@jpillora.com",
-    "b.j.rossiter@gmail.com"
+    "ibenschop@gmail.com"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jpillora/grunt-aws"
+    "url": "https://github.com/ibenschop/grunt-pure-s3"
   },
   "bugs": {
-    "url": "https://github.com/jpillora/grunt-aws/issues"
+    "url": "https://github.com/ibenschop/grunt-pure-s3/issues"
   },
   "licenses": "MIT",
   "main": "Gruntfile.js",
@@ -30,7 +29,6 @@
     "amazon",
     "aws",
     "s3",
-    "cloudfront",
     "cache",
     "caching",
     "gzip",

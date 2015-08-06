@@ -1,36 +1,45 @@
 
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks("grunt-aws");
+  grunt.loadNpmTasks("grunt-pure-s3");
 
   grunt.initConfig({
 
     aws: grunt.file.readJSON("aws-credentials.json"),
 
-    s3: {
+    staging: {
       options: {
-        accessKeyId: "<%= aws.accessKeyId %>",
-        secretAccessKey: "<%= aws.secretAccessKey %>",
-        bucket: "..."
-      },
-      build: {
-        cwd: "build",
-        src: "**"
+        bucket: "preview.domain.com",
+        accessKeyId: '<%= aws.accessKeyId %>',
+        secretAccessKey: '<%= aws.secretAccessKey %>',
+        region: "us-west-2",
+        concurrency: 20,
+        gzip:false,
+        cache:false,
+        headers: {
+          CacheControl: 'max-age=300',
+          ContentEncoding: "gzip",
+          Expires: new Date('2016')
+        }
       }
     },
 
-    cloudfront: {
+    production: {
       options: {
-        accessKeyId: "<%= aws.accessKeyId %>",
-        secretAccessKey: "<%= aws.secretAccessKey %>",
-        distributionId: "...",
-        invalidations: [
-          "/index.html"
-        ]
-      },
-      invalidate: {}
+        bucket: "production.domain.com",
+        accessKeyId: '<%= aws.accessKeyId %>',
+        secretAccessKey: '<%= aws.secretAccessKey %>',
+        region: "us-west-2",
+        concurrency: 20,
+        cache:false,
+        headers: {
+          CacheControl: 'max-age=5000',
+          ContentEncoding: "gzip",
+          Expires: new Date('2016')
+        }
+      }
     }
   });
 
-  grunt.registerTask("default", ["s3"]);
+  grunt.registerTask("default", ["staging"]);
 };
