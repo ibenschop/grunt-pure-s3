@@ -1,6 +1,6 @@
 # grunt-pure-s3
 
-A Grunt interface into the Amazon Web Services Node.JS SDK `aws-sdk`
+A Grunt interface into the Amazon S3 Web Services Node.JS SDK `aws-sdk`
 
 [![NPM version](https://nodei.co/npm/grunt-aws.png?compact=true)](https://npmjs.org/package/grunt-aws)
 
