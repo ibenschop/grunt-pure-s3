@@ -41,30 +41,39 @@ Currently however, it only supports:
 
 ### Usage
 
-Target staging to upload to bucket `preview.domain.com`:
+Target staging to upload 'assets' to bucket `preview.domain.com/staging`:
 
-```js
+```
+module.exports = function(grunt) {
+
+  grunt.loadNpmTasks("grunt-pure-s3");
+
   grunt.initConfig({
-  
-   aws: grunt.file.readJSON("aws-credentials.json"),
-   
-       staging: {
-         options: {
-           bucket: "preview.domain.com",
-           accessKeyId: '<%= aws.accessKeyId %>',
-           secretAccessKey: '<%= aws.secretAccessKey %>',
-           region: "us-west-2",
-           concurrency: 20,
-           gzip:false,
-           cache:false,
-           headers: {
-             CacheControl: 'max-age=300',
-             ContentEncoding: "gzip",
-             Expires: new Date('2016')
-           }
-         }
-       },
+
+    "pure-s3": {
+      staging: {
+        options: {
+          bucket: "preview.domain.com",
+          accessKeyId: 'AWS-->accessKeyId',
+          secretAccessKey: 'AWS-->secretAccessKey',
+          region: "us-west-2",
+          concurrency: 20,
+          cache: false,
+          headers: {
+            CacheControl: 'max-age=300',
+            ContentEncoding: "gzip",
+            Expires: new Date('2016')
+          }
+        },
+        expand:true,
+        src: "assets/**",
+        dest:"staging"
+      }
+
   });
+
+  grunt.registerTask("default", ["pure-s3:staging"]);
+};
 ```
 
 
