@@ -41,7 +41,7 @@ Currently however, it only supports:
 
 ### Usage
 
-To upload all files *inside* `build/` into `my-awesome-bucket`:
+Target staging to upload to bucket `preview.domain.com`:
 
 ```js
   grunt.initConfig({
